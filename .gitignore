@@ -1,0 +1,10 @@
+# Python
+*.egg-info
+*pyc
+__pycache__/*
+
+# editors/IDE
+.vscode
+
+# logs
+*.log
