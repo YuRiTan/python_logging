@@ -10,6 +10,9 @@ LOG_FMT = ("[%(asctime)s] [%(levelname)s] %(name)s %(filename)s:"
 DATE_FMT = "%Y-%m-%d %H:%M:%S"
  
 
+logger = logging.getLogger()
+
+
 def setup_bare_logging(loglevel):
     """ setting up (root) logger without any handlers 
     
@@ -65,19 +68,23 @@ def setup_logging(loglevel):
 
 
 def check_logdir(directory):
-    if directory in [None, '']:
-        directory = './'
-    elif not os.path.exists(directory):
+    try:
+        directory = os.path.normpath(directory)
+    except TypeError as te:
+        logger.warning("Provided invalid directory. Setting "
+                       "logdir to current working directory."
+                       " Original error: {}".format(te))
+        directory = '.'
+    
+    if not os.path.exists(directory):
         os.makedirs(directory)
     return directory
-
 
 def setup_rotating_file_logger(loglevel, fname, directory=None, **rfh_kwargs):
     """ Sets root logger, and creates RotatingFileHandler with format defined by
     the `LOG_FMT` constant from this module.
     """
     setup_logging(loglevel)
-
     directory = check_logdir(directory)
     handler = RotatingFileHandler(
         os.path.join(directory, fname), 
