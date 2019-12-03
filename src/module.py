@@ -1,6 +1,5 @@
 import logging
 import pandas as pd
-# import requests
 import urllib3
 
 logger = logging.getLogger(__name__)
@@ -36,4 +35,3 @@ def function_that_logs_from_third_party():
     """
     http = urllib3.PoolManager()
     r = http.request('GET', 'http://httpbin.org/robots.txt')
-

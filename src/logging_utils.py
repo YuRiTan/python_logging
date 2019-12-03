@@ -80,6 +80,7 @@ def check_logdir(directory):
         os.makedirs(directory)
     return directory
 
+
 def setup_rotating_file_logger(loglevel, fname, directory=None, **rfh_kwargs):
     """ Sets root logger, and creates RotatingFileHandler with format defined by
     the `LOG_FMT` constant from this module.
@@ -115,3 +116,18 @@ def setup_timed_rotating_file_logger(loglevel, fname, directory=None, **trfh_kwa
     handler.setLevel(loglevel)
     logging.root.addHandler(handler)
 
+
+def setlevel_third_party_loggers(prefix, loglevel=logging.WARNING):
+    """ Sets loglevel of (third party) loggers (with a certain prefix like `sklearn`)
+    to certain level. This is often done when loglevel is set to DEBUG, but you 
+    would like to set a different loglevel to this third party logger.
+    """
+    for name in logging.root.manager.loggerDict:
+        if name.startswith(prefix):
+            logging.getLogger(name).setLevel(loglevel)
+
+
+def add_filter(filter_):
+    """ Utility function that adds a filter to all root handlers """
+    for handler in logging.root.handlers:
+        handler.addFilter(filter_)
