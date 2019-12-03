@@ -24,10 +24,16 @@ def function_that_logs_from_third_party():
     """ In case you use a Python Module that uses Python's logging module
     the logs will appear in between our logs too. This is because we capture
     our logs using the root logger. You can remove them for example by setting
-    the loglevel differently on module level as shown below. """
+    the loglevel differently on module level as shown below. 
+    
+    Example
+    -------
+    `urllib3.connectionpool` triggers DEBUG logs, you could set urllib3 
+    to loglevel WARNING for example:
+    
+    >>> logging.getLogger("urllib3").setLevel(logging.WARNING)
+    
+    """
     http = urllib3.PoolManager()
     r = http.request('GET', 'http://httpbin.org/robots.txt')
-    # urllib3.connectionpool triggers DEBUG logs, you could set
-    # urllib3 to WARNING for example:
-    # logging.getLogger("urllib3").setLevel(logging.WARNING)
 

@@ -39,9 +39,15 @@ if __name__ == '__main__':
     logger.info("Active root handlers: {}".format(logging.root.handlers))
 
     same_module_function()
-
     other_module_function()
+    
+    # Triggers a warning to stdout. Will show up in console, not in logfile.
     function_that_triggers_pandas_warning()
+
+    # urllib3 uses python's logging module. You can therefore set the loglevel
+    # differently to ignore certain logs for this specific library.
+    # Uncomment the next line to ignore INFO and DEBUG messages from urllib3
+    # logging.getLogger("urllib3").setLevel(logging.WARNING)
     function_that_logs_from_third_party()
 
     submodule_function()
